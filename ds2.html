@@ -7,90 +7,115 @@
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
+    <style>
+        h1.ff,p.ff{
+        font-family: 'Orbitron', sans-serif;
+        }
+    </style>
+
     <script src="darksky.secret.js"></script>
     <script>
     $(function () {
-        $.getJSON("https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.103,138.8598?units=si&lang=ja&exclude=currently,minutely,hourly,alerts,flags",
+        $.getJSON("https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.2637,139.1502?units=si&lang=ja&exclude=currently,minutely,hourly,alerts,flags",
             function (data) {
-       
+                let t = 0.0;
             $("#desc").text(data.daily.summary);
             $("#desc0").text(data.daily.data[0].summary);
-            $("#temp0").text(data.daily.data[0].temperatureHigh);
-            $("#temp0low").text(data.daily.data[0].temperatureLow);
+            t = data.daily.data[0].temperatureHigh*10;
+            t = Math.round(t)/10;
+            $("#temp0").text(t);
+            t = data.daily.data[0].temperatureLow*10;
+            t = Math.round(t)/10;
+            $("#temp0low").text(t);
             $("#desc1").text(data.daily.data[1].summary);
-            $("#temp1").text(data.daily.data[1].temperatureHigh);
-            $("#temp1low").text(data.daily.data[1].temperatureLow);
+            t = data.daily.data[1].temperatureHigh*10;
+            t = Math.round(t)/10;
+            $("#temp1").text(t);
+            t = data.daily.data[1].temperatureLow*10;
+            t = Math.round(t)/10;
+            $("#temp1low").text(t);
             $("#desc2").text(data.daily.data[2].summary);
-            $("#temp2").text(data.daily.data[2].temperatureHigh);
-            $("#temp2low").text(data.daily.data[2].temperatureLow);
+            t = data.daily.data[2].temperatureHigh*10;
+            t = Math.round(t)/10;
+            $("#temp2").text(t);
+            t = data.daily.data[2].temperatureLow*10;
+            t = Math.round(t)/10;
+            $("#temp2low").text(t);
             $("#desc3").text(data.daily.data[3].summary);
-            $("#temp3").text(data.daily.data[3].temperatureHigh);
-            $("#temp3low").text(data.daily.data[3].temperatureLow);
+            t = data.daily.data[3].temperatureHigh*10;
+            t = Math.round(t)/10;
+            $("#temp3").text(t);
+            t = data.daily.data[3].temperatureLow*10;
+            t = Math.round(t)/10;
+            $("#temp3low").text(t);
 
 //            $("#weather").show();
         });
     });
-function set2fig(num) {
-   // 桁数が1桁だったら先頭に0を加えて2桁に調整する
-   var ret;
-   if( num < 10 ) { ret = "0" + num; }
-   else { ret = num; }
-   return ret;
-}
-function showClock2() {
-   var nowTime = new Date();
-   var nowHour = set2fig( nowTime.getHours() );
-   var nowMin  = set2fig( nowTime.getMinutes() );
-   var nowSec  = set2fig( nowTime.getSeconds() );
-   var msg = nowHour + ":" + nowMin + ":" + nowSec ;
-   document.getElementById("RealtimeClockArea").innerHTML = msg;
-}
-setInterval('showClock2()',1000);
+
+    function showClock2() {
+        let nowTime = new Date();
+        $("#RealtimeClockArea").text(`${('00'+nowTime.getHours()).slice(-2)}:${('00'+nowTime.getMinutes()).slice(-2)}:${('00'+nowTime.getSeconds()).slice(-2)}`);
+        $("#DayArea").text(`${(nowTime.getMonth()+1)}/${nowTime.getDate()}`);
+    }
+    setInterval('showClock2()',1000);
   </script>
   </head>
   <body>
+    <div class="page-header">
+        <div class="container">
+            <h1 class="ff" id="RealtimeClockArea" align="center"> </h1>
+            <p class="ff" id="DayArea" align="center"></p>
+        </div>
+    </div>
     <div class="container">
-      <div class="header">
-        <h2 id="RealtimeClockArea"> </h2>
-      </div>
       <div class="row">
         <div class="col-md-12">
-          <h3 class="text-muted">沼津</h3>
+          <h4>小田原</h4>
           <p id="desc"></p>
         </div>
       </div>
       <div class="row">
             <div class="col-md-3">
+            <div class="well">
                 <h2>今日</h2>
-                <ul>
-                    <li id="temp0"></li>
-                    <li id="temp0low"></li>
-                    <li id="desc0"></li>
-                </ul>
+                <h4>
+                <span class="label label-danger" id="temp0"></span>
+                <span class="label label-info" id="temp0low"></span>
+                </h4>
+                <p id="desc0"></p>
+            </div>
             </div>
             <div class="col-md-3">
+                <div class="well">
                 <h2>明日</h2>
-                <ul>
-                    <li id="temp1"></li>
-                    <li id="temp1low"></li>
-                    <li id="desc1"></li>
-                </ul>
+                <h4>
+                <span class="label label-danger" id="temp1"></span>
+                <span class="label label-info" id="temp1low"></span>
+                </h4>
+                <p id="desc1"></p>
+                </div>
             </div>
             <div class="col-md-3">
-                <h2></h2>
-                <ul>
-                    <li id="temp2"></li>
-                    <li id="temp2low"></li>
-                    <li id="desc2"></li>
-                </ul>
+                <div class="well">
+                <h2><span id="adat"></span></h2>
+                <h4>
+                <span class="label label-danger" id="temp2"></span>
+                <span class="label label-info" id="temp2low"></span>
+                </h4>
+                <p id="desc2"></p>
+                </div>
             </div>
             <div class="col-md-3">
-                <h2></h2>
-                <ul>
-                    <li id="temp3"></li>
-                    <li id="temp3low"></li>
-                    <li id="desc3"></li>
-                </ul>
+                <div class="well">
+                <h2><span id="tdat"></span></h2>
+                <h4>
+                <span class="label label-danger" id="temp3"></span>
+                <span class="label label-info" id="temp3low"></span>
+                </h4>
+                <p id="desc3"></p>
+                </div>
             </div>
       </div>
     </div>
