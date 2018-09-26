@@ -11,6 +11,11 @@
     <style>
         h1.ff,p.ff{
         font-family: 'Orbitron', sans-serif;
+        color:antiquewhite;
+        }
+        body{
+            background-color:midnightblue;
+            color:antiquewhite;
         }
     </style>
 
@@ -31,50 +36,41 @@
         "thunderstorm":"", 
         "tornado":""
     };
+    function tenkiload(){
     $(function () {
-        $.getJSON("https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.2637,139.1502?units=si&lang=ja&exclude=currently,minutely,hourly,alerts,flags",
+        $.getJSON("https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.2637,139.1502?units=si&lang=ja&exclude=currently,minutely,alerts,flags",
             function (data) {
-                let t = 0.0;
+            let tmp = 0.0;
+            let ht = null;
+            
+            
             $("#desc").text(data.daily.summary);
+            
+            let dat=null;
+            for (let i=0; i<4; i++){
+                $("#d"+i+"-icon").children('img').attr('src', tenki[data.daily.data[i].icon]);
+                $("#d"+i+"-desc").text(data.daily.data[i].summary);
+                $("#d"+i+"-temphigh").text(Math.round(data.daily.data[i].temperatureHigh*10)/10+"℃");
+                $("#d"+i+"-templow").text(Math.round(data.daily.data[i].temperatureLow*10)/10+"℃");
+                dat=new Date(data.daily.data[2].time*1000);
+                $("#"+i+"-date").text(`${(dat.getMonth()+1)}/${dat.getDate()}`);
+            }
 
-            $('.icon0').children('img').attr('src', tenki[data.daily.data[0].icon]);
-            $("#desc0").text(data.daily.data[0].summary);
-            t = data.daily.data[0].temperatureHigh*10;
-            t = Math.round(t)/10;
-            $("#temp0").text(t);
-            t = data.daily.data[0].temperatureLow*10;
-            t = Math.round(t)/10;
-            $("#temp0low").text(t);
+            let j=0;
+            for (let i=0; i<4; i++){
+                ht=new Date(data.hourly.data[j].time*1000);
+                $("#h"+i+"-time").text(`${ht.getHours()}:00`);
+                $("#h"+i+"-temp").text(Math.round(data.hourly.data[j].temperature*10)/10+"℃");
+                $("#h"+i+"-sum").text(data.hourly.data[j].summary);
+                j=j+3;
+            }
 
-            $('.icon1').children('img').attr('src', tenki[data.daily.data[1].icon]);
-            $("#desc1").text(data.daily.data[1].summary);
-            t = data.daily.data[1].temperatureHigh*10;
-            t = Math.round(t)/10;
-            $("#temp1").text(t);
-            t = data.daily.data[1].temperatureLow*10;
-            t = Math.round(t)/10;
-            $("#temp1low").text(t);
 
-            $('.icon2').children('img').attr('src', tenki[data.daily.data[2].icon]);
-            $("#desc2").text(data.daily.data[2].summary);
-            t = data.daily.data[2].temperatureHigh*10;
-            t = Math.round(t)/10;
-            $("#temp2").text(t);
-            t = data.daily.data[2].temperatureLow*10;
-            t = Math.round(t)/10;
-            $("#temp2low").text(t);
-
-            $('.icon3').children('img').attr('src', tenki[data.daily.data[3].icon]);
-            $("#desc3").text(data.daily.data[3].summary);
-            t = data.daily.data[3].temperatureHigh*10;
-            t = Math.round(t)/10;
-            $("#temp3").text(t);
-            t = data.daily.data[3].temperatureLow*10;
-            t = Math.round(t)/10;
-            $("#temp3low").text(t);
-//            $("#weather").show();
         });
     });
+    };
+    tenkiload();
+    setInterval('tenkiload()',900000);//15分に1回
 
     function showClock2() {
         let nowTime = new Date();
@@ -100,48 +96,61 @@
       </div>
       <div class="row">
             <div class="col-md-3">
-            <div class="well">
                 <h2>今日</h2>
                 <h4>
-                <div class="icon0"><img src="img/010701sonota107-trans.png"></img></div>
-                <span class="label label-danger" id="temp0"></span>
-                <span class="label label-info" id="temp0low"></span>
+                <div id="d0-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d0-temphigh"></span>
+                <span class="label label-info" id="d0-templow"></span>
                 </h4>
-                <p id="desc0"></p>
-            </div>
+                <p id="d0-desc"></p>
             </div>
             <div class="col-md-3">
-                <div class="well">
                 <h2>明日</h2>
                 <h4>
-                <div class="icon1"><img src="img/010701sonota107-trans.png"></img></div>
-                <span class="label label-danger" id="temp1"></span>
-                <span class="label label-info" id="temp1low"></span>
+                <div id="d1-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d1-temphigh"></span>
+                <span class="label label-info" id="d1-templow"></span>
                 </h4>
-                <p id="desc1"></p>
-                </div>
+                <p id="d1-desc"></p>
             </div>
             <div class="col-md-3">
-                <div class="well">
-                <h2><span id="adat"></span></h2>
+                <h2><span id="d2-date"></span></h2>
                 <h4>
-                <div class="icon2"><img src="img/010701sonota107-trans.png"></img></div>
-                <span class="label label-danger" id="temp2"></span>
-                <span class="label label-info" id="temp2low"></span>
+                <div id="d2-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d2-temphigh"></span>
+                <span class="label label-info" id="d2-templow"></span>
                 </h4>
-                <p id="desc2"></p>
-                </div>
+                <p id="d2-desc"></p>
             </div>
             <div class="col-md-3">
-                <div class="well">
-                <h2><span id="tdat"></span></h2>
+                <h2><span id="d2-date"></span></h2>
                 <h4>
-                <div class="icon3"><img src="img/010701sonota107-trans.png"></img></div>
-                <span class="label label-danger" id="temp3"></span>
-                <span class="label label-info" id="temp3low"></span>
+                <div id="d3-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d3-temphigh"></span>
+                <span class="label label-info" id="d3-templow"></span>
                 </h4>
-                <p id="desc3"></p>
-                </div>
+                <p id="d3-desc"></p>
+            </div>
+      </div>
+      <div class="row">
+        これからの天気
+      </div>
+      <div class="row">
+            <div class="col-md-2">
+                <h4 id="h0-time"></h4>
+                <span id="h0-sum"></span>(<span id="h0-temp"></span>)
+            </div>
+            <div class="col-md-2">
+                <h4 id="h1-time"></h4>
+                <span id="h1-sum"></span>(<span id="h1-temp"></span>)
+            </div>
+            <div class="col-md-2">
+                <h4 id="h2-time"></h4>
+                <span id="h2-sum"></span>(<span id="h2-temp"></span>)
+            </div>
+            <div class="col-md-2">
+                <h4 id="h3-time"></h4>
+                <span id="h3-sum"></span>(<span id="h3-temp"></span>)
             </div>
       </div>
     </div>
