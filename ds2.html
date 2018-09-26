@@ -16,11 +16,28 @@
 
     <script src="darksky.secret.js"></script>
     <script>
+    const tenki = {
+        "clear-day":"img/010701sonota107-trans.png",
+        "clear-night":"",
+        "rain":"img/010701sonota118-trans.png",
+        "snow":"", 
+        "sleet":"", 
+        "wind":"", 
+        "fog":"", 
+        "cloudy":"img/010701sonota113-trans.png", 
+        "partly-cloudy-day":"img/010701sonota147-trans.png", 
+        "partly-cloudy-night":"",
+        "hail":"", 
+        "thunderstorm":"", 
+        "tornado":""
+    };
     $(function () {
         $.getJSON("https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.2637,139.1502?units=si&lang=ja&exclude=currently,minutely,hourly,alerts,flags",
             function (data) {
                 let t = 0.0;
             $("#desc").text(data.daily.summary);
+
+            $('.icon0').children('img').attr('src', tenki[data.daily.data[0].icon]);
             $("#desc0").text(data.daily.data[0].summary);
             t = data.daily.data[0].temperatureHigh*10;
             t = Math.round(t)/10;
@@ -28,6 +45,8 @@
             t = data.daily.data[0].temperatureLow*10;
             t = Math.round(t)/10;
             $("#temp0low").text(t);
+
+            $('.icon1').children('img').attr('src', tenki[data.daily.data[1].icon]);
             $("#desc1").text(data.daily.data[1].summary);
             t = data.daily.data[1].temperatureHigh*10;
             t = Math.round(t)/10;
@@ -35,6 +54,8 @@
             t = data.daily.data[1].temperatureLow*10;
             t = Math.round(t)/10;
             $("#temp1low").text(t);
+
+            $('.icon2').children('img').attr('src', tenki[data.daily.data[2].icon]);
             $("#desc2").text(data.daily.data[2].summary);
             t = data.daily.data[2].temperatureHigh*10;
             t = Math.round(t)/10;
@@ -42,6 +63,8 @@
             t = data.daily.data[2].temperatureLow*10;
             t = Math.round(t)/10;
             $("#temp2low").text(t);
+
+            $('.icon3').children('img').attr('src', tenki[data.daily.data[3].icon]);
             $("#desc3").text(data.daily.data[3].summary);
             t = data.daily.data[3].temperatureHigh*10;
             t = Math.round(t)/10;
@@ -49,7 +72,6 @@
             t = data.daily.data[3].temperatureLow*10;
             t = Math.round(t)/10;
             $("#temp3low").text(t);
-
 //            $("#weather").show();
         });
     });
@@ -81,6 +103,7 @@
             <div class="well">
                 <h2>今日</h2>
                 <h4>
+                <div class="icon0"><img src="img/010701sonota107-trans.png"></img></div>
                 <span class="label label-danger" id="temp0"></span>
                 <span class="label label-info" id="temp0low"></span>
                 </h4>
@@ -91,6 +114,7 @@
                 <div class="well">
                 <h2>明日</h2>
                 <h4>
+                <div class="icon1"><img src="img/010701sonota107-trans.png"></img></div>
                 <span class="label label-danger" id="temp1"></span>
                 <span class="label label-info" id="temp1low"></span>
                 </h4>
@@ -101,6 +125,7 @@
                 <div class="well">
                 <h2><span id="adat"></span></h2>
                 <h4>
+                <div class="icon2"><img src="img/010701sonota107-trans.png"></img></div>
                 <span class="label label-danger" id="temp2"></span>
                 <span class="label label-info" id="temp2low"></span>
                 </h4>
@@ -111,6 +136,7 @@
                 <div class="well">
                 <h2><span id="tdat"></span></h2>
                 <h4>
+                <div class="icon3"><img src="img/010701sonota107-trans.png"></img></div>
                 <span class="label label-danger" id="temp3"></span>
                 <span class="label label-info" id="temp3low"></span>
                 </h4>
