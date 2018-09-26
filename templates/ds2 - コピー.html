@@ -52,12 +52,12 @@
                 $("#d"+i+"-desc").text(data.daily.data[i].summary);
                 $("#d"+i+"-temphigh").text(Math.round(data.daily.data[i].temperatureHigh*10)/10+"℃");
                 $("#d"+i+"-templow").text(Math.round(data.daily.data[i].temperatureLow*10)/10+"℃");
-                dat=new Date(data.daily.data[i].time*1000);
-                $("#d"+i+"-date").text(`${(dat.getMonth()+1)}/${dat.getDate()}`);
+                dat=new Date(data.daily.data[2].time*1000);
+                $("#"+i+"-date").text(`${(dat.getMonth()+1)}/${dat.getDate()}`);
             }
 
             let j=0;
-            for (let i=0; i<5; i++){
+            for (let i=0; i<4; i++){
                 ht=new Date(data.hourly.data[j].time*1000);
                 $("#h"+i+"-time").text(`${ht.getHours()}:00`);
                 $("#h"+i+"-temp").text(Math.round(data.hourly.data[j].temperature*10)/10+"℃");
@@ -95,30 +95,51 @@
         </div>
       </div>
       <div class="row">
-            {% for i in [0,1,2,3] %}
             <div class="col-md-3">
-                <h2><span id="d{{i}}-date"></span></h2>
+                <h2>今日</h2>
                 <h4>
-                <div id="d{{i}}-icon"><img src=""></img></div>
-                <span class="label label-danger" id="d{{i}}-temphigh"></span>
-                <span class="label label-info" id="d{{i}}-templow"></span>
+                <div id="d0-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d0-temphigh"></span>
+                <span class="label label-info" id="d0-templow"></span>
                 </h4>
-                <p id="d{{i}}-desc"></p>
+                <p id="d0-desc"></p>
             </div>
-            {% endfor %}
+            <div class="col-md-3">
+                <h2>明日</h2>
+                <h4>
+                <div id="d1-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d1-temphigh"></span>
+                <span class="label label-info" id="d1-templow"></span>
+                </h4>
+                <p id="d1-desc"></p>
+            </div>
+            <div class="col-md-3">
+                <h2><span id="d2-date"></span></h2>
+                <h4>
+                <div id="d2-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d2-temphigh"></span>
+                <span class="label label-info" id="d2-templow"></span>
+                </h4>
+                <p id="d2-desc"></p>
+            </div>
+            <div class="col-md-3">
+                <h2><span id="d2-date"></span></h2>
+                <h4>
+                <div id="d3-icon"><img src=""></img></div>
+                <span class="label label-danger" id="d3-temphigh"></span>
+                <span class="label label-info" id="d3-templow"></span>
+                </h4>
+                <p id="d3-desc"></p>
+            </div>
       </div>
       <div class="row">
         これからの天気
       </div>
       <div class="row">
-            {% for i in [0,1,2,3,4] %}
             <div class="col-md-2">
-                <h4 id="h{{i}}-time"></h4>
-                <span id="h{{i}}-sum"></span>(<span id="h{{i}}-temp"></span>)
+                <h4 id="h0-time"></h4>
+                <span id="h0-sum"></span>(<span id="h0-temp"></span>)
             </div>
-
-            {% endfor %}
-            <!--
             <div class="col-md-2">
                 <h4 id="h1-time"></h4>
                 <span id="h1-sum"></span>(<span id="h1-temp"></span>)
@@ -131,7 +152,6 @@
                 <h4 id="h3-time"></h4>
                 <span id="h3-sum"></span>(<span id="h3-temp"></span>)
             </div>
-            -->
       </div>
     </div>
 
