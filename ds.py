@@ -1,5 +1,9 @@
 from flask import Flask, render_template, make_response
-import simplejson as json
+#import simplejson as json
+import json
+import requests
+from darksky_secret import DARKSKYKEY
+
 
 app = Flask(__name__)
 
@@ -12,8 +16,14 @@ def index():
 # APIの実装
 @app.route('/api', methods=['GET', 'POST'])
 def get():
-    
-    return make_response(json.dumps(result, ignore_nan=True, ensure_ascii=False))
+    url = "https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.2637,139.1502?units=si&lang=ja&exclude=currently,minutely,alerts,flags"
+    ret = requests.get(url)
+    jsondata = None
+    if ret.status_code == 200:
+        jsondata = ret.json()
+        
+        #print(jsondata)
+    return make_response(json.dumps(jsondata,  ensure_ascii=False))
 
 
 ## おまじない

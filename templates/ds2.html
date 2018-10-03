@@ -38,7 +38,7 @@
     };
     function tenkiload(){
     $(function () {
-        $.getJSON("https://api.darksky.net/forecast/"+DARKSKYKEY+"/35.2637,139.1502?units=si&lang=ja&exclude=currently,minutely,alerts,flags",
+        $.getJSON("/api",
             function (data) {
             let tmp = 0.0;
             let ht = null;

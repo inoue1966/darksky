@@ -1,1 +1,3 @@
-darksky.secret.js
+*.secret.js
+*_secret.py
+__pycache__
