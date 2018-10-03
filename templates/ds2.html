@@ -20,6 +20,8 @@
     </style>
 
     <script src="static/js/darksky.secret.js"></script>
+    <script src="static/js/skycons.js"></script>
+    
     <script>
     const tenki = {
         "clear-day":"static/img/010701sonota107-trans.png",
@@ -36,6 +38,11 @@
         "thunderstorm":"", 
         "tornado":""
     };
+    const skycons = new Skycons({"color": "white"});
+    for (let i=0; i<4; i++){
+                skycons.add("#d"+i+"-icon", Skycons.PARTLY_CLOUDY_DAY);
+            }
+
     function tenkiload(){
     $(function () {
         $.getJSON("/api",
@@ -46,9 +53,11 @@
             
             $("#desc").text(data.daily.summary);
             
+            
             let dat=null;
             for (let i=0; i<4; i++){
-                $("#d"+i+"-icon").children('img').attr('src', tenki[data.daily.data[i].icon]);
+                //$("#d"+i+"-icon").children('img').attr('src', tenki[data.daily.data[i].icon]);
+                skycons.set("#d"+i+"-icon", Skycons.PARTLY_CLOUDY_DAY);
                 $("#d"+i+"-desc").text(data.daily.data[i].summary);
                 $("#d"+i+"-temphigh").text(Math.round(data.daily.data[i].temperatureHigh*10)/10+"℃");
                 $("#d"+i+"-templow").text(Math.round(data.daily.data[i].temperatureLow*10)/10+"℃");
@@ -65,7 +74,7 @@
                 j=j+3;
             }
 
-
+            skycons.play();
         });
     });
     };
@@ -76,9 +85,9 @@
         let nowTime = new Date();
         $("#RealtimeClockArea").text(`${('00'+nowTime.getHours()).slice(-2)}:${('00'+nowTime.getMinutes()).slice(-2)}:${('00'+nowTime.getSeconds()).slice(-2)}`);
         $("#DayArea").text(`${(nowTime.getMonth()+1)}/${nowTime.getDate()}`);
-    }
+    };
     setInterval('showClock2()',1000);
-  </script>
+ </script>
   </head>
   <body>
     <div class="page-header">
@@ -98,8 +107,8 @@
             {% for i in [0,1,2,3] %}
             <div class="col-md-3">
                 <h2><span id="d{{i}}-date"></span></h2>
+                <canvas id="d{{i}}-icon" width="64" height="64"></canvas>
                 <h4>
-                <div id="d{{i}}-icon"><img src=""></img></div>
                 <span class="label label-danger" id="d{{i}}-temphigh"></span>
                 <span class="label label-info" id="d{{i}}-templow"></span>
                 </h4>
@@ -136,4 +145,8 @@
     </div>
 
   </body>
+  <script>
+      skycons.play();
+
+  </script>
 </html>
