@@ -6,22 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm">
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
+    </script>
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
-<style>
+    <style>
         h1.ff,
         p.ff {
-            font-family: 'Lekton', sans-serif;
-            color: antiquewhite;
-        }
-
-        body {
-            background-color: midnightblue;
-            color: antiquewhite;
+            font-family: 'GN-キルゴUかなNA', 'Lekton', sans-serif;
         }
     </style>
 
@@ -30,20 +26,21 @@
 
     <script>
         const tenki = {
-            "clear-day": "static/img/010701sonota107-trans.png",
-            "clear-night": "",
-            "rain": "static/img/010701sonota118-trans.png",
-            "snow": "",
-            "sleet": "",
-            "wind": "",
-            "fog": "",
-            "cloudy": "static/img/010701sonota113-trans.png",
-            "partly-cloudy-day": "static/img/010701sonota147-trans.png",
-            "partly-cloudy-night": "",
-            "hail": "",
-            "thunderstorm": "",
-            "tornado": ""
+            "clear-day": "static/img/clear-day.png",
+            "clear-night": "static/img/clear-day.png",
+            "rain": "static/img/rain.png",
+            "snow": "static/img/snow.png",
+            "sleet": "static/img/sleet.png",
+            "wind": "static/img/wind.png",
+            "fog": "static/img/fog.png",
+            "cloudy": "static/img/cloudy.png",
+            "partly-cloudy-day": "static/img/partly-cloudy-day.png",
+            "partly-cloudy-night": "static/img/partly-cloudy-night.png",
+            "hail": "static/img/hail.png",
+            "thunderstorm": "static/img/thunderstorm.png",
+            "tornado": "static/img/tornado.png"
         };
+        const youbi = ["日", "月", "火", "水", "木", "金", "土"];
 
         var skycons = new Skycons({ "color": "white" });
         for (let i = 0; i < 4; i++) {
@@ -61,13 +58,13 @@
 
                 let dat = null;
                 for (let i = 0; i < 4; i++) {
-                    //$("#d"+i+"-icon").children('img').attr('src', tenki[data.daily.data[i].icon]);
-                    skycons.set("#d" + i + "-icon", Skycons.PARTLY_CLOUDY_DAY);
+                    $("#d" + i + "-icon").children('img').attr('src', tenki[response.data.daily.data[i].icon]);
+                    //skycons.set("#d" + i + "-icon", Skycons.PARTLY_CLOUDY_DAY);
                     $("#d" + i + "-desc").text(response.data.daily.data[i].summary);
                     $("#d" + i + "-temphigh").text(Math.round(response.data.daily.data[i].temperatureHigh * 10) / 10 + "℃");
                     $("#d" + i + "-templow").text(Math.round(response.data.daily.data[i].temperatureLow * 10) / 10 + "℃");
                     dat = new Date(response.data.daily.data[i].time * 1000);
-                    $("#d" + i + "-date").text(`${(dat.getMonth() + 1)}/${dat.getDate()}`);
+                    $("#d" + i + "-date").text(`${(dat.getMonth() + 1)}/${dat.getDate()}(${youbi[dat.getDay()]})`);
                 }
 
                 let j = 0;
@@ -88,48 +85,53 @@
         function showClock2() {
             let nowTime = new Date();
             $("#RealtimeClockArea").text(`${('00' + nowTime.getHours()).slice(-2)}:${('00' + nowTime.getMinutes()).slice(-2)}:${('00' + nowTime.getSeconds()).slice(-2)}`);
-            $("#DayArea").text(`${(nowTime.getMonth() + 1)}/${nowTime.getDate()}`);
+            $("#DayArea").text(`${(nowTime.getMonth() + 1)}/${nowTime.getDate()}(${youbi[nowTime.getDay()]})`);
         };
         setInterval('showClock2()', 1000);
     </script>
 </head>
 
 <body>
-    <div class="page-header">
-        <div class="container">
-            <h1 class="ff" id="RealtimeClockArea" align="center"> </h1>
-            <p class="ff" id="DayArea" align="center"></p>
-        </div>
-    </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
+                <h1 class="ff" id="RealtimeClockArea" align="left""> </h1>
+                <p class=" ff" id="DayArea"
+                    align="left">
+                    </p>
+            </div>
+            <div class="col-md-4">
                 <h4>小田原</h4>
                 <p id="desc"></p>
             </div>
         </div>
         <div class="row">
             (% for i in [0,1,2,3] %)
-            <div class="col-md-3">
-                <h2><span id="d((i))-date"></span></h2>
-                <canvas id="d((i))-icon" width="64" height="64"></canvas>
-                <h4>
-                    <span class="label label-danger" id="d((i))-temphigh"></span>
-                    <br/>
-                    <span class="label label-info" id="d((i))-templow"></span>
-                </h4>
-                <p id="d((i))-desc"></p>
+            <div class="col-md-3 ">
+                <div class="">
+                    <div>
+                        <span id="d((i))-icon"><img></img></span>
+                        <h2><span id="d((i))-date"></span></h2>
+                        <span class="badge badge-danger" id="d((i))-temphigh"></span>
+                        <br />
+                        <span class="badge badge-info" id="d((i))-templow"></span>
+                        <p id="d((i))-desc"></p>
+                    </div>
+                </div>
+
             </div>
             (% endfor %)
         </div>
         <div class="row">
             これからの天気
         </div>
-        <div class="row">
+        <div class="d-flex justify-content-around">
             (% for i in [0,1,2,3,4] %)
-            <div class="col-md-2">
-                <h4 id="h((i))-time"></h4>
-                <span id="h((i))-sum"></span>(<span id="h((i))-temp"></span>)
+            <div class="">
+                <h4 id="h((i))-time" align="center"></h4>
+                <p align="center">
+                    <span id="h((i))-sum"></span><br /><span id="h((i))-temp"></span>
+                </p>
             </div>
 
             (% endfor %)
