@@ -6,17 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm">
-    
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm">
+-->
+    <link rel="stylesheet" href="/static/css/bootstrap4-neon-glow.min.css" />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous">
-    </script>
+        crossorigin="anonymous"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/dseg.css" />
     <style>
         h1.ff,
+        h4.ff,
         p.ff {
+            font-family: 'D7MMBI', 'GN-キルゴUかなNA', 'Lekton', sans-serif;
+        }
+
+        h2.ff {
             font-family: 'GN-キルゴUかなNA', 'Lekton', sans-serif;
         }
     </style>
@@ -81,52 +87,185 @@
         };
         tenkiload();
         setInterval('tenkiload()', 900000);//15分に1回
-
+/*
         function showClock2() {
             let nowTime = new Date();
             $("#RealtimeClockArea").text(`${('00' + nowTime.getHours()).slice(-2)}:${('00' + nowTime.getMinutes()).slice(-2)}:${('00' + nowTime.getSeconds()).slice(-2)}`);
             $("#DayArea").text(`${(nowTime.getMonth() + 1)}/${nowTime.getDate()}(${youbi[nowTime.getDay()]})`);
         };
         setInterval('showClock2()', 1000);
+*/
     </script>
+    <script>
+
+        var daylist = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
+
+        function genTimerStrings(tm, num) {
+
+            var i;
+            var ret = tm.toString(10);
+            var left = ret.length;
+
+            if (left < num) {
+                for (i = 0; i < (num - left); i++) {
+                    ret = String(0) + ret;
+                }
+            }
+
+            return ret;
+        }
+
+        function updateTimer() {
+            var ret;
+            var date = new Date();
+            var tm_year, tm_mon, tm_date, tm_hour, tm_min, tm_sec, tm_msec, tm_day;
+            var colon;
+
+            tm_year = date.getFullYear();
+            tm_mon = date.getMonth() + 1;
+            tm_date = date.getDate();
+            tm_day = date.getDay();
+            tm_hour = date.getHours();
+            tm_min = date.getMinutes();
+            tm_sec = date.getSeconds();
+            tm_msec = date.getMilliseconds();
+
+            tm_mon = genTimerStrings(tm_mon, 2);
+            tm_date = genTimerStrings(tm_date, 2);
+            tm_hour = genTimerStrings(tm_hour, 2);
+            tm_min = genTimerStrings(tm_min, 2);
+            tm_sec = genTimerStrings(tm_sec, 2);
+            tm_day = daylist[tm_day];
+
+            if (tm_msec > 499) {
+                colon = ' ';
+            } else {
+                colon = ':';
+            }
+
+            document.getElementById("DSEGClock").innerHTML = tm_hour + colon + tm_min + "<span style=\"font-size:30px;\">" + tm_sec + "</span>";
+            document.getElementById("DSEGClock-Year").innerHTML = "<span class=\"D7MI\">" + tm_year + "-" + tm_mon + "-" + tm_date + ' ' + "</span><span class=\"D14MI\">" + tm_day + "." + "</span>";
+
+            setTimeout("updateTimer()", 500 - date.getMilliseconds() % 500);
+        }
+    </script>
+    <style>
+        .Clock-Wrapper {
+            position: relative;
+            border: 6px solid #000;
+            border-radius: 9px;
+            height: 143px;
+            width: 316px;
+            background-color: greenyellow;
+            /*
+            box-shadow: 4px 4px 1px 0px rgba(0, 0, 0, 0.4) inset;
+            */
+        }
+
+
+        .Clock-Time-Background {
+            z-index: 50;
+            position: absolute;
+            top: 35px;
+            left: 6px;
+            color: rgba(0, 0, 0, 0.1);
+            font-size: 70px;
+        }
+
+        .Clock-Time-Front {
+            z-index: 100;
+            position: absolute;
+            top: 35px;
+            left: 6px;
+            color: black;
+            font-size: 70px;
+        }
+
+        .Clock-Year-Background {
+            z-index: 50;
+            position: absolute;
+            top: 13px;
+            left: 6px;
+            color: rgba(0, 0, 0, 0.1);
+            font-size: 27px;
+        }
+
+        .Clock-Year-Front {
+            z-index: 100;
+            position: absolute;
+            top: 13px;
+            left: 6px;
+            color: black;
+            font-size: 27px;
+
+        }
+    </style>
+
 </head>
 
-<body>
+<body onload="updateTimer()">
     <div class="container">
         <div class="row">
             <div class="col-md-8">
+                <br />
                 <h1 class="ff" id="RealtimeClockArea" align="left""> </h1>
-                <p class=" ff" id="DayArea"
+                        <h2 class=" ff" id="DayArea"
                     align="left">
-                    </p>
+                    </h2>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="Clock-Wrapper">
+                    <span class="Clock-Time-Background D7MBI">88:88<span style="font-size:30px;">88</span></span>
+                    <span id="DSEGClock" class="Clock-Time-Front D7MBI"></span>
+                    <span class="Clock-Year-Background"><span class="D7MI">2088-88-88</span><span class="D14MI"> ~~~</span></span>
+                    <span id="DSEGClock-Year" class="Clock-Year-Front"></span>
+                </div>
             </div>
             <div class="col-md-4">
-                <h4>小田原</h4>
+                <br />
+                <h4 class="ff">小田原</h4>
                 <p id="desc"></p>
             </div>
         </div>
         <div class="row">
             (% for i in [0,1,2,3] %)
-            <div class="col-md-3 ">
+            <div class="col-md-3">
                 <div class="">
-                    <div>
-                        <span id="d((i))-icon"><img></img></span>
-                        <h2><span id="d((i))-date"></span></h2>
-                        <span class="badge badge-danger" id="d((i))-temphigh"></span>
-                        <br />
-                        <span class="badge badge-info" id="d((i))-templow"></span>
-                        <p id="d((i))-desc"></p>
+
+                    <h3><span id="d((i))-date"></span></h3>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <span id="d((i))-icon"><img></img></span><br />
+                        </div>
+                        <div class="col-md-4">
+                            <span class="badge badge-danger" id="d((i))-temphigh"></span>
+                            
+                            <span class="badge badge-info" id="d((i))-templow"></span>
+                        </div>
                     </div>
+
+                    <p id="d((i))-desc"></p>
+
                 </div>
 
             </div>
             (% endfor %)
         </div>
         <div class="row">
-            これからの天気
         </div>
         <div class="d-flex justify-content-around">
-            (% for i in [0,1,2,3,4] %)
+                <div class="">
+                        <p>
+                                これからの天気
+                        </p>
+                    </div>
+                    (% for i in [0,1,2,3,4] %)
             <div class="">
                 <h4 id="h((i))-time" align="center"></h4>
                 <p align="center">
