@@ -18,10 +18,13 @@
     <style>
         @font-face {
         font-family: "kilgo";
-        src: url("/static/fonts/GN-KillGothic-U-KanaNB.woff") format('woff');
+        src: url("/static/fonts/GN-KillGothic-U-KanaNB.woff2") format('woff2');
         }
         .ff {
             font-family: 'kilgo', 'Lekton', sans-serif;
+        }
+        .templow{
+            color:darkgrey;
         }
     </style>
 
@@ -84,16 +87,50 @@
             });
         };
         tenkiload();
-        setInterval('tenkiload()', 900000);//15分に1回
-/*
-        function showClock2() {
-            let nowTime = new Date();
-            $("#RealtimeClockArea").text(`${('00' + nowTime.getHours()).slice(-2)}:${('00' + nowTime.getMinutes()).slice(-2)}:${('00' + nowTime.getSeconds()).slice(-2)}`);
-            $("#DayArea").text(`${(nowTime.getMonth() + 1)}/${nowTime.getDate()}(${youbi[nowTime.getDay()]})`);
-        };
-        setInterval('showClock2()', 1000);
-*/
+        setInterval('tenkiload()', 1800000);//30分に1回
+
     </script>
+    <script>
+        $(function () {
+
+            // show popupボタンクリック時の処理
+            $('#show').click(function (e) {
+                $('#popup, #layer').show();
+            });
+
+            // レイヤー/ポップアップのcloseボタンクリック時の処理
+            $('#close, #layer').click(function (e) {
+                $('#popup, #layer').hide();
+            });
+
+        });
+    </script>
+    <style>
+        #layer {
+            display: none;  /* 初期表示は非表示 */
+            position: fixed; 
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background-color:coral;
+            opacity: 0.20;
+        }
+        #popup {
+            display: none;  /* 初期表示は非表示 */
+            position: fixed; 
+            left: 25%;
+            top: 25%;
+            width: 50%;
+            height: 50%;
+            /*margin-left: -150px;
+            margin-top: -100px;*/
+            background-color:black;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+
     <script>
 
         var daylist = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
@@ -150,11 +187,11 @@
     <style>
         .Clock-Wrapper {
             position: relative;
-            border: 6px solid rgb(206, 253, 206);
+            border: 6px solid rgb(255, 255, 255);
             border-radius: 9px;
             height: 143px;
             width: 316px;
-            background-color: greenyellow;
+            background-color:darkgrey;
             
             box-shadow: 4px 4px 1px 0px rgba(0, 0, 0, 0.4) inset;
             
@@ -227,7 +264,11 @@
             </div>
             <div class="col-md-6">
                 <br />
-                <h4 class="ff">小田原</h4>
+                <h4>
+                    <span class="ff">小田原</span>
+                    <span id="show">東京</span>
+
+                </h4>
                 <p id="desc"></p>
             </div>
         </div>
@@ -236,15 +277,15 @@
             <div class="col-md-3">
                 <div class="">
 
-                    <h3 align="center"><span id="d((i))-date" class="ff"></span></h3>
+                    <h4 align="center"><span id="d((i))-date" class="ff"></span></h4>
                     <div class="row">
                         <div class="col-md-8">
                             <span id="d((i))-icon"><img></img></span><br />
                         </div>
                         <div class="col-md-4">
-                            <span class="badge badge-danger" id="d((i))-temphigh"></span>
-                            
-                            <span class="badge badge-info" id="d((i))-templow"></span>
+                            <span class="" id="d((i))-temphigh"></span>
+
+                            <span class="templow" id="d((i))-templow"></span>
                         </div>
                     </div>
 
@@ -255,15 +296,13 @@
             </div>
             (% endfor %)
         </div>
-        <div class="row">
-        </div>
         <div class="d-flex justify-content-around">
-                <div class="align-self-center">
-                        <p class="ff">
-                                これからの天気
-                        </p>
-                    </div>
-                    (% for i in [0,1,2,3,4] %)
+            <div class="align-self-center">
+                <p class="ff">
+                    これからの天気
+                </p>
+            </div>
+            (% for i in [0,1,2,3,4] %)
             <div class="">
                 <h4 id="h((i))-time" align="center"></h4>
                 <p align="center">
@@ -275,6 +314,36 @@
         </div>
     </div>
 
+    <!-- レイヤー -->
+    <div id="layer"></div>
+    <!-- ポップアップ -->
+    <div id="popup">
+        <div class="row">
+            <div class="col-md-12 ">
+                <h4 class="ff">東京</h4>
+                <div>
+                    <div>10/10(水)</div>
+                    <div>
+                        tenki
+                    </div>
+                    <span>high</span><span>low</span>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <p class="ff">これからの天気</p>
+        <div class="d-flex justify-content-around">
+            (% for i in [0,1,2,3,4] %)
+                <div>
+                    <h4>10:00</h4>
+                    <div>tenki</div>
+                    <span>temp</span>
+                </div>
+            (% endfor %)
+        </div>
+        <br />
+        <input type="button" id="close" value="close"></input>
+    </div>
 </body>
 
 </html>
