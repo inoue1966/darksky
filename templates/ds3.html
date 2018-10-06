@@ -16,13 +16,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lekton" rel="stylesheet" />
     <link rel="stylesheet" href="/static/css/dseg.css" />
     <style>
-        h1.ff,
-        h4.ff,
-        p.ff {
-            font-family: 'D7MMBI', 'GN-キルゴUかなNA', 'Lekton', sans-serif;
-        }
-
-        h2.ff {
+        .ff {
             font-family: 'GN-キルゴUかなNA', 'Lekton', sans-serif;
         }
     </style>
@@ -152,14 +146,14 @@
     <style>
         .Clock-Wrapper {
             position: relative;
-            border: 6px solid #000;
+            border: 6px solid rgb(206, 253, 206);
             border-radius: 9px;
             height: 143px;
             width: 316px;
             background-color: greenyellow;
-            /*
+            
             box-shadow: 4px 4px 1px 0px rgba(0, 0, 0, 0.4) inset;
-            */
+            
         }
 
 
@@ -219,7 +213,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="Clock-Wrapper">
                     <span class="Clock-Time-Background D7MBI">88:88<span style="font-size:30px;">88</span></span>
                     <span id="DSEGClock" class="Clock-Time-Front D7MBI"></span>
@@ -227,7 +221,7 @@
                     <span id="DSEGClock-Year" class="Clock-Year-Front"></span>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <br />
                 <h4 class="ff">小田原</h4>
                 <p id="desc"></p>
@@ -238,7 +232,7 @@
             <div class="col-md-3">
                 <div class="">
 
-                    <h3><span id="d((i))-date"></span></h3>
+                    <h3 align="center"><span id="d((i))-date"></span></h3>
                     <div class="row">
                         <div class="col-md-8">
                             <span id="d((i))-icon"><img></img></span><br />
@@ -260,8 +254,8 @@
         <div class="row">
         </div>
         <div class="d-flex justify-content-around">
-                <div class="">
-                        <p>
+                <div class="align-self-center">
+                        <p class="ff">
                                 これからの天気
                         </p>
                     </div>
