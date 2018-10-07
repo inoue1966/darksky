@@ -1,0 +1,49 @@
+.Clock-Wrapper {
+    position: relative;
+    border: 6px solid rgb(255, 255, 255);
+    border-radius: 9px;
+    height: 143px;
+    width: 316px;
+    background-color:darkgrey;
+    
+    box-shadow: 4px 4px 1px 0px rgba(0, 0, 0, 0.4) inset;
+    
+}
+
+
+.Clock-Time-Background {
+    z-index: 50;
+    position: absolute;
+    top: 35px;
+    left: 6px;
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 70px;
+}
+
+.Clock-Time-Front {
+    z-index: 100;
+    position: absolute;
+    top: 35px;
+    left: 6px;
+    color: black;
+    font-size: 70px;
+}
+
+.Clock-Year-Background {
+    z-index: 50;
+    position: absolute;
+    top: 13px;
+    left: 6px;
+    color: rgba(0, 0, 0, 0.1);
+    font-size: 27px;
+}
+
+.Clock-Year-Front {
+    z-index: 100;
+    position: absolute;
+    top: 13px;
+    left: 6px;
+    color: black;
+    font-size: 27px;
+
+}

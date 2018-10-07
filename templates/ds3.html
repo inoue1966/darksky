@@ -29,78 +29,27 @@
     </style>
 
     <script src="static/js/darksky.secret.js"></script>
-    <script src="static/js/skycons.js"></script>
 
+    <script src="static/js/tenki.js"></script>
     <script>
-        const tenki = {
-            "clear-day": "static/img/clear-day.png",
-            "clear-night": "static/img/clear-day.png",
-            "rain": "static/img/rain.png",
-            "snow": "static/img/snow.png",
-            "sleet": "static/img/sleet.png",
-            "wind": "static/img/wind.png",
-            "fog": "static/img/fog.png",
-            "cloudy": "static/img/cloudy.png",
-            "partly-cloudy-day": "static/img/partly-cloudy-day.png",
-            "partly-cloudy-night": "static/img/partly-cloudy-night.png",
-            "hail": "static/img/hail.png",
-            "thunderstorm": "static/img/thunderstorm.png",
-            "tornado": "static/img/tornado.png"
-        };
-        const youbi = ["日", "月", "火", "水", "木", "金", "土"];
-
-        var skycons = new Skycons({ "color": "white" });
-        for (let i = 0; i < 4; i++) {
-            skycons.add("#d" + i + "-icon", Skycons.PARTLY_CLOUDY_DAY);
-        }
-
-        function tenkiload() {
-            axios.get("/api").then(response => {
-                let tmp = 0.0;
-                let ht = null;
-
-
-                $("#desc").text(response.data.daily.summary);
-
-
-                let dat = null;
-                for (let i = 0; i < 4; i++) {
-                    $("#d" + i + "-icon").children('img').attr('src', tenki[response.data.daily.data[i].icon]);
-                    //skycons.set("#d" + i + "-icon", Skycons.PARTLY_CLOUDY_DAY);
-                    $("#d" + i + "-desc").text(response.data.daily.data[i].summary);
-                    $("#d" + i + "-temphigh").text(Math.round(response.data.daily.data[i].temperatureHigh * 10) / 10 + "℃");
-                    $("#d" + i + "-templow").text(Math.round(response.data.daily.data[i].temperatureLow * 10) / 10 + "℃");
-                    dat = new Date(response.data.daily.data[i].time * 1000);
-                    $("#d" + i + "-date").text(`${(dat.getMonth() + 1)}/${dat.getDate()}(${youbi[dat.getDay()]})`);
-                }
-
-                let j = 0;
-                for (let i = 0; i < 5; i++) {
-                    ht = new Date(response.data.hourly.data[j].time * 1000);
-                    $("#h" + i + "-time").text(`${ht.getHours()}:00`);
-                    $("#h" + i + "-temp").text(Math.round(response.data.hourly.data[j].temperature * 10) / 10 + "℃");
-                    $("#h" + i + "-sum").text(response.data.hourly.data[j].summary);
-                    j = j + 3;
-                }
-
-                skycons.play();
-            });
-        };
         tenkiload();
         setInterval('tenkiload()', 1800000);//30分に1回
-
     </script>
     <script>
         $(function () {
 
             // show popupボタンクリック時の処理
-            $('#show').click(function (e) {
-                $('#popup, #layer').show();
+            $('#showtokyo').click(function (e) {
+                $('#popuptokyo, #layer').show();
+            });
+            // show popupボタンクリック時の処理
+            $('#shownumazu').click(function (e) {
+                $('#popupnumazu, #layer').show();
             });
 
             // レイヤー/ポップアップのcloseボタンクリック時の処理
             $('#close, #layer').click(function (e) {
-                $('#popup, #layer').hide();
+                $('#popuptokyo, #popupnumazu, #layer').hide();
             });
 
         });
@@ -116,13 +65,13 @@
             background-color:coral;
             opacity: 0.20;
         }
-        #popup {
+        #popuptokyo,#popupnumazu {
             display: none;  /* 初期表示は非表示 */
             position: fixed; 
-            left: 25%;
-            top: 25%;
+            left: 50%;
+            top: 0%;
             width: 50%;
-            height: 50%;
+            height: 100%;
             /*margin-left: -150px;
             margin-top: -100px;*/
             background-color:black;
@@ -131,110 +80,8 @@
         }
     </style>
 
-    <script>
-
-        var daylist = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"];
-
-        function genTimerStrings(tm, num) {
-
-            var i;
-            var ret = tm.toString(10);
-            var left = ret.length;
-
-            if (left < num) {
-                for (i = 0; i < (num - left); i++) {
-                    ret = String(0) + ret;
-                }
-            }
-
-            return ret;
-        }
-
-        function updateTimer() {
-            var ret;
-            var date = new Date();
-            var tm_year, tm_mon, tm_date, tm_hour, tm_min, tm_sec, tm_msec, tm_day;
-            var colon;
-
-            tm_year = date.getFullYear();
-            tm_mon = date.getMonth() + 1;
-            tm_date = date.getDate();
-            tm_day = date.getDay();
-            tm_hour = date.getHours();
-            tm_min = date.getMinutes();
-            tm_sec = date.getSeconds();
-            tm_msec = date.getMilliseconds();
-
-            tm_mon = genTimerStrings(tm_mon, 2);
-            tm_date = genTimerStrings(tm_date, 2);
-            tm_hour = genTimerStrings(tm_hour, 2);
-            tm_min = genTimerStrings(tm_min, 2);
-            tm_sec = genTimerStrings(tm_sec, 2);
-            tm_day = daylist[tm_day];
-
-            if (tm_msec > 499) {
-                colon = ' ';
-            } else {
-                colon = ':';
-            }
-
-            document.getElementById("DSEGClock").innerHTML = tm_hour + colon + tm_min + "<span style=\"font-size:30px;\">" + tm_sec + "</span>";
-            document.getElementById("DSEGClock-Year").innerHTML = "<span class=\"D7MI\">" + tm_year + "-" + tm_mon + "-" + tm_date + ' ' + "</span><span class=\"D14MI\">" + tm_day + "." + "</span>";
-
-            setTimeout("updateTimer()", 500 - date.getMilliseconds() % 500);
-        }
-    </script>
-    <style>
-        .Clock-Wrapper {
-            position: relative;
-            border: 6px solid rgb(255, 255, 255);
-            border-radius: 9px;
-            height: 143px;
-            width: 316px;
-            background-color:darkgrey;
-            
-            box-shadow: 4px 4px 1px 0px rgba(0, 0, 0, 0.4) inset;
-            
-        }
-
-
-        .Clock-Time-Background {
-            z-index: 50;
-            position: absolute;
-            top: 35px;
-            left: 6px;
-            color: rgba(0, 0, 0, 0.1);
-            font-size: 70px;
-        }
-
-        .Clock-Time-Front {
-            z-index: 100;
-            position: absolute;
-            top: 35px;
-            left: 6px;
-            color: black;
-            font-size: 70px;
-        }
-
-        .Clock-Year-Background {
-            z-index: 50;
-            position: absolute;
-            top: 13px;
-            left: 6px;
-            color: rgba(0, 0, 0, 0.1);
-            font-size: 27px;
-        }
-
-        .Clock-Year-Front {
-            z-index: 100;
-            position: absolute;
-            top: 13px;
-            left: 6px;
-            color: black;
-            font-size: 27px;
-
-        }
-    </style>
+    <script src="/static/js/clock.js"></script>
+    <link rel="stylesheet" href="/static/css/clock.css" />
 
 </head>
 
@@ -264,11 +111,11 @@
             </div>
             <div class="col-md-6">
                 <br />
-                <h4>
-                    <span class="ff">小田原</span>
-                    <span id="show">東京</span>
-
-                </h4>
+                <div class="d-flex justify-content-around">
+                    <h4 class="ff">小田原</h4>
+                    <h4 id="showtokyo" class="ff">東京</h4>
+                    <h4 id="shownumazu" class="ff">沼津</h4>
+                </div>
                 <p id="desc"></p>
             </div>
         </div>
@@ -317,28 +164,68 @@
     <!-- レイヤー -->
     <div id="layer"></div>
     <!-- ポップアップ -->
-    <div id="popup">
+    <div id="popuptokyo">
         <div class="row">
             <div class="col-md-12 ">
                 <h4 class="ff">東京</h4>
-                <div>
-                    <div>10/10(水)</div>
+                <div class="d-flex justify-content-around">
+                    (% for i in [0,1] %)
                     <div>
-                        tenki
+                        <h4 id="t((i))-date">10/10(水)</h4>
+                        <span id="t((i))-icon"><img></img></span><br />
+                        <span id="t((i))-temphigh">high</span> <span id="t((i))-templow" class="templow">low</span>
+                        <div id="t((i))-desc">
+                            tenki
+                        </div>
                     </div>
-                    <span>high</span><span>low</span>
+                    (% endfor %)
                 </div>
             </div>
         </div>
-        <br/>
+        <br />
         <p class="ff">これからの天気</p>
         <div class="d-flex justify-content-around">
-            (% for i in [0,1,2,3,4] %)
-                <div>
-                    <h4>10:00</h4>
-                    <div>tenki</div>
-                    <span>temp</span>
+            (% for i in [0,1,2,3] %)
+            <div class="">
+                <h4 id="th((i))-time" align="center">10:00</h4>
+                <p align="center">
+                    <span id="th((i))-sum">tenki</span><br /><span id="th((i))-temp">20℃</span>
+                </p>
+            </div>
+            (% endfor %)
+        </div>
+        <br />
+        <input type="button" id="close" value="close"></input>
+    </div>
+    <!-- ポップアップ -->
+    <div id="popupnumazu">
+        <div class="row">
+            <div class="col-md-12 ">
+                <h4 class="ff">沼津</h4>
+                <div class="d-flex justify-content-around">
+                    (% for i in [0,1] %)
+                    <div>
+                        <h4 id="n((i))-date">10/10(水)</h4>
+                        <span id="n((i))-icon"><img></img></span><br />
+                        <span id="n((i))-temphigh">high</span> <span id="n((i))-templow" class="templow">low</span>
+                        <div id="n((i))-desc">
+                            tenki
+                        </div>
+                    </div>
+                    (% endfor %)
                 </div>
+            </div>
+        </div>
+        <br />
+        <p class="ff">これからの天気</p>
+        <div class="d-flex justify-content-around">
+            (% for i in [0,1,2,3] %)
+            <div class="">
+                <h4 id="nh((i))-time" align="center">10:00</h4>
+                <p align="center">
+                    <span id="nh((i))-sum">tenki</span><br /><span id="nh((i))-temp">20℃</span>
+                </p>
+            </div>
             (% endfor %)
         </div>
         <br />
